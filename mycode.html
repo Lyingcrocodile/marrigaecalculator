@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marriage Card Game Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #075e54;
+            text-align: center;
+            color: #fff;
+        }
+
+        h1 {
+            color: #f2f2f2;
+            background-color: #128c7e;
+            padding: 10px;
+            margin: 0;
+        }
+
+        #calculator {
+            background-color: #128c7e;
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            background-color: #f2f2f2;
+            color: #128c7e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #075e54;
+            color: #f2f2f2;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Marriage Card Game Calculator</h1>
+    <div id="calculator">
+        <!-- Input fields for player scores based on the selected number of players -->
+        <!-- Calculator button for Total Score -->
+        <button onclick="calculateTotalScore()">For Double Game</button>
+        <!-- Calculator button for Marriage Points -->
+        <button onclick="calculateMarriagePoints()">Calculate Marriage Points</button>
+
+        <div id="totalScoreResult" style="font-weight: bold; margin: 20px 0;"></div>
+        <div id="marriagePointsResult" style="font-weight: bold; margin: 20px 0;"></div>
+
+        <!-- Input fields for getting the required information -->
+        <div>
+            <label for="playerNumberInput">Number of Players: </label>
+            <input type="number" id="playerNumberInput" min="1">
+        </div>
+        <div>
+            <label for="watchMaalInput">Kati jana le maal heryo: </label>
+            <input type="number" id="watchMaalInput" min="1">
+        </div>
+        <div id="playerPointInputs">
+            <!-- Input fields for player points will be generated dynamically -->
+        </div>
+    </div>
+
+    <script>
+        function calculateTotalScore() {
+            const playerNumber = parseInt(document.getElementById("playerNumberInput").value);
+            const watchMaal = parseInt(document.getElementById("watchMaalInput").value);
+            const playerPoint = [];
+
+            // Gather input for player points
+            for (let i = 1; i <= watchMaal; i++) {
+                const playerPointInput = document.getElementById(`playerPointInput${i}`);
+                playerPoint.push(parseInt(playerPointInput.value));
+            }
+
+            let totalPoint = 5;
+            for (let x of playerPoint) {
+                totalPoint += x;
+            }
+
+            const totalPaisa = [];
+            for (let i = 0; i < playerPoint.length; i++) {
+                totalPaisa.push((playerPoint[i] * playerNumber) - totalPoint);
+            }
+
+            // Display the results on the page
+            let result = `For Double Game: Your total maal is ${totalPoint}, and paisa calculation results are as follows:<br>`;
+            for (let i = 0; i < playerPoint.length; i++) {
+                result += `If your point is ${playerPoint[i]}, your amount = ${totalPaisa[i]}<br>`;
+            }
+
+            document.getElementById("totalScoreResult").innerHTML = result;
+        }
+
+        function calculateMarriagePoints() {
+            const playerNumber = parseInt(document.getElementById("playerNumberInput").value);
+            const watchMaal = parseInt(document.getElementById("watchMaalInput").value);
+            const playerPoint = [];
+
+            // Gather input for player points
+            for (let i = 1; i <= watchMaal; i++) {
+                const playerPointInput = document.getElementById(`playerPointInput${i}`);
+                playerPoint.push(parseInt(playerPointInput.value));
+            }
+
+            let totalPoint = 3;
+            for (let x of playerPoint) {
+                totalPoint += x;
+            }
+
+            const totalPaisa = [];
+            for (let i = 0; i < playerPoint.length; i++) {
+                totalPaisa.push((playerPoint[i] * playerNumber) - totalPoint);
+            }
+
+            // Display the results on the page
+            let result = `Marriage Points: Your total maal is ${totalPoint}, and paisa calculation results are as follows:<br>`;
+            for (let i = 0; i < playerPoint.length; i++) {
+                result += `If your point is ${playerPoint[i]}, your amount = ${totalPaisa[i]}<br>`;
+            }
+
+            document.getElementById("marriagePointsResult").innerHTML = result;
+        }
+
+        // JavaScript logic to dynamically generate input fields
+        document.addEventListener('DOMContentLoaded', function () {
+            const calculatorContainer = document.getElementById('calculator');
+
+            // Event listener for "Kati jana le maal heryo" input
+            const watchMaalInput = document.getElementById('watchMaalInput');
+            watchMaalInput.addEventListener('input', () => {
+                const watchMaal = parseInt(watchMaalInput.value);
+                const playerPointInputs = document.getElementById('playerPointInputs');
+                playerPointInputs.innerHTML = ''; // Clear existing input fields
+
+                for (let i = 1; i <= watchMaal; i++) {
+                    const playerPointLabel = document.createElement('label');
+                    playerPointLabel.textContent = `Enter point for Player ${i}:`;
+                    const playerPointInput = document.createElement('input');
+                    playerPointInput.type = 'number';
+                    playerPointInput.min = '0';
+                    playerPointInput.id = `playerPointInput${i}`;
+
+                    playerPointInputs.appendChild(playerPointLabel);
+                    playerPointInputs.appendChild(playerPointInput);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
